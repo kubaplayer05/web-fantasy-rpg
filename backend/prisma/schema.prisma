@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id             String    @id @default(uuid())
+    username       String    @unique
+    hashedPassword String
+    class          UserClass @relation(fields: [classId], references: [id])
+    classId        Int
+    money          Int       @default(0)
+    exp            Int       @default(0)
+    lvl            Int       @default(1)
+    hp             Int       @default(100)
+    atk            Int       @default(10)
+    def            Int       @default(10)
+    int            Int       @default(10)
+    sta            Int       @default(10)
+}
+
+model UserClass {
+    id     Int      @id @default(autoincrement())
+    name   String
+    desc   String
+    User   User[]
+    Weapon Weapon[]
+}
+
+model Weapon {
+    id        Int       @id @default(autoincrement())
+    userClass UserClass @relation(fields: [classId], references: [id])
+    rarity    Rarity    @default(COMMON)
+    classId   Int
+    atk       Int       @default(0)
+    def       Int       @default(0)
+    int       Int       @default(0)
+    sta       Int       @default(0)
+}
+
+enum Rarity {
+    COMMON
+    UNCOMMON
+    RARE
+    EPIC
+    LEGENDARY
+}
