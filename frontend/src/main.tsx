@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import './index.css'
 import App from "./App.tsx";
-import Register from "./pages/Register.tsx";
+import Register, {registerAction, registerLoader} from "./pages/Register.tsx";
 
 const router = createBrowserRouter([
     {
@@ -12,7 +12,9 @@ const router = createBrowserRouter([
     },
     {
         path: "/register",
-        element: <Register/>
+        element: <Register/>,
+        loader: registerLoader,
+        action: registerAction
     }
 ])
 
