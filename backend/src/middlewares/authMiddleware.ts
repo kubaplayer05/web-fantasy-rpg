@@ -30,6 +30,7 @@ const authMiddleware = async (req: Request, res: Response, next: NextFunction) =
             })
         }
 
+        // @ts-ignore
         req.user = user
         next()
 
