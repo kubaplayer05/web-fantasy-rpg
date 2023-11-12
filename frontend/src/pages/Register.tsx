@@ -1,8 +1,9 @@
 import Input from "../components/Input.tsx";
 import Button from "../components/Button.tsx";
 import {useActionData, useLoaderData} from "react-router";
-import React, {useState} from "react";
-import {Form} from "react-router-dom";
+import React from "react";
+import {Form, Link} from "react-router-dom";
+import {atom, useAtom} from "jotai";
 
 interface UserClass {
     id: number,
@@ -10,11 +11,13 @@ interface UserClass {
     desc: string
 }
 
+const selectedIndexAtom = atom(0)
+
 export default function Register() {
 
     const classes = useLoaderData()
     const res = useActionData()
-    const [selectedIndex, setSelectedIndex] = useState(0)
+    const [selectedIndex, setSelectedIndex] = useAtom(selectedIndexAtom)
 
     const changeDesc = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedIndex(e.target.options.selectedIndex)
@@ -45,7 +48,10 @@ export default function Register() {
                             })}
                         </select>
                     </div>
-                    <Button>Create Account</Button>
+                    <div className="flex flex-col gap-2">
+                        <Button className="text-lg">Create Account</Button>
+                        <Link className="text-center" to="/login">or go to Login page</Link>
+                    </div>
                 </div>
                 <div className="border-l-2 border-l-gray-300 px-4">
                     <span className="text-gray-300">Description:</span>
