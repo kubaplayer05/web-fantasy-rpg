@@ -1,6 +1,6 @@
 import Input from "../components/Input.tsx";
 import Button from "../components/Button.tsx";
-import {useActionData, useLoaderData} from "react-router";
+import {useLoaderData} from "react-router";
 import React from "react";
 import {Form, Link} from "react-router-dom";
 import {atom, useAtom} from "jotai";
@@ -16,14 +16,12 @@ const selectedIndexAtom = atom(0)
 export default function Register() {
 
     const classes = useLoaderData()
-    const res = useActionData()
     const [selectedIndex, setSelectedIndex] = useAtom(selectedIndexAtom)
 
     const changeDesc = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedIndex(e.target.options.selectedIndex)
     }
 
-    console.log(res)
 
     return (
         <div className="absolute bottom-1/2 right-1/2 translate-x-1/2 translate-y-1/2 w-[80%] max-w-[1000px]">
@@ -73,7 +71,7 @@ export async function registerLoader() {
     })
 
     if (!response.ok) {
-        return []
+        return null
     }
 
     const {content} = await response.json()
