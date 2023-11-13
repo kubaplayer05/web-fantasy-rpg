@@ -1,9 +1,10 @@
 import Input from "../components/Input.tsx";
 import Button from "../components/Button.tsx";
-import {useLoaderData} from "react-router";
-import React from "react";
+import {useActionData, useLoaderData} from "react-router";
+import React, {useEffect} from "react";
 import {Form, Link} from "react-router-dom";
 import {atom, useAtom} from "jotai";
+import {useAuthContext} from "../hooks/useAuthContext.ts";
 
 interface UserClass {
     id: number,
@@ -15,13 +16,20 @@ const selectedIndexAtom = atom(0)
 
 export default function Register() {
 
+    const {dispatch} = useAuthContext()
     const classes = useLoaderData()
+    const actionData = useActionData()
     const [selectedIndex, setSelectedIndex] = useAtom(selectedIndexAtom)
+
+    useEffect(() => {
+        if (actionData) {
+            dispatch({type: "LOGIN", payload: actionData})
+        }
+    }, [actionData])
 
     const changeDesc = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedIndex(e.target.options.selectedIndex)
     }
-
 
     return (
         <div className="absolute bottom-1/2 right-1/2 translate-x-1/2 translate-y-1/2 w-[80%] max-w-[1000px]">

@@ -26,7 +26,7 @@ const reducer = (state: Auth, action: AuthAction) => {
     switch (action.type) {
         case "LOGIN":
             return {
-                username: action.payload
+                ...action.payload
             }
         case "LOGOUT":
             return {
