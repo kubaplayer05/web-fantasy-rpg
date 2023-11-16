@@ -4,6 +4,7 @@ import {useAuthContext} from "./hooks/useAuthContext.ts";
 import {Navigate} from "react-router-dom";
 import Login, {loginAction} from "./pages/Login.tsx";
 import RootLayout from "./Layout/RootLayout.tsx";
+import Profile, {profileLoader} from "./pages/Profile.tsx";
 
 export default function App() {
 
@@ -15,7 +16,13 @@ export default function App() {
             element: state.username ? <RootLayout/> : <Navigate to="/register"/>,
             children: [
                 {
-                    path: "/"
+                    path: "/profile/:username",
+                    element: <Profile/>,
+                    loader: profileLoader
+                },
+                {
+                    path: "/profile",
+                    element: <Navigate to={`/profile/${state.username}`}/>
                 }
             ]
         },
