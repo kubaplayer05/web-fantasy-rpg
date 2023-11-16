@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
-import {PrismaClient} from '@prisma/client'
+import {PrismaClient} from "@prisma/client"
 import {Request, Response} from "express"
 
 const prisma = new PrismaClient()
@@ -63,13 +63,27 @@ export const registerHandler = async (req: Request, res: Response) => {
             data: {
                 username,
                 hashedPassword: hash,
-                classId: selectedClass.id
+                classId: selectedClass.id,
+                equipedWeaponId: selectedClass.id
             }
         })
 
         if (!user) {
             return res.status(400).json({error: "Could not create user"})
         }
+
+        const inventory = await prisma.userInventory.create({
+            data: {
+                userId: user.id,
+                ownedWeapons: {
+                    connect: [
+                        {
+                            id: selectedClass.id
+                        }
+                    ]
+                }
+            }
+        })
 
         const token = createToken(user.id)
 

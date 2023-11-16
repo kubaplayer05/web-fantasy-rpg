@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser'
 import authRoute from "./routes/authRoute";
 import userClassRoute from "./routes/userClassRoute";
 import authMiddleware from "./middlewares/authMiddleware";
+import userRoute from "./routes/userRoute";
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ app.use(express.json())
 app.use(cookieParser())
 
 app.use("/api/user", authRoute)
+app.use("/api/user", userRoute)
 app.use("/api/userClass", userClassRoute)
 
 app.use(authMiddleware)
