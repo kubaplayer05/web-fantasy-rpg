@@ -26,6 +26,7 @@ export const getUserProfile = async (req: Request, res: Response) => {
                         name: true
                     }
                 },
+                equipedWeapon: true,
                 money: true,
                 exp: true,
                 lvl: true,
