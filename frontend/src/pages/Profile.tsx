@@ -1,4 +1,10 @@
 import {useLoaderData} from "react-router";
+import swordIcon from "../assets/pixel-sword.png"
+import heartIcon from "../assets/pixel-heart.png"
+import shieldIcon from "../assets/pixel-shield.png"
+import staminaIcon from "../assets/pixel-energy.png"
+import bookIcon from "../assets/pixel-book.png"
+
 
 export default function Profile() {
 
@@ -24,11 +30,26 @@ export default function Profile() {
 
                         <h2 className="text-2xl py-4 mt-8">Statistics</h2>
                         <ul className="flex flex-col gap-1 px-4 py-2">
-                            <li>HP: {loaderData.hp}</li>
-                            <li>ATK: {loaderData.atk}</li>
-                            <li>DEF: {loaderData.def}</li>
-                            <li>INT: {loaderData.int}</li>
-                            <li>STA: {loaderData.sta}</li>
+                            <li className="flex gap-4 items-center">
+                                <img className="w-[26px] h-[26px]" src={heartIcon} alt="HP"/>{
+                                loaderData.hp}
+                            </li>
+                            <li className="flex gap-4 items-center">
+                                <img className="w-[26px] h-[26px]" src={swordIcon} alt="ATK"/>{
+                                loaderData.atk}
+                            </li>
+                            <li className="flex gap-4 items-center">
+                                <img className="w-[26px] h-[26px]" src={shieldIcon} alt="DEF"/>{
+                                loaderData.def}
+                            </li>
+                            <li className="flex gap-4 items-center">
+                                <img className="w-[26px] h-[26px]" src={staminaIcon} alt="STA"/>{
+                                loaderData.sta}
+                            </li>
+                            <li className="flex gap-4 items-center">
+                                <img className="w-[26px] h-[26px]" src={bookIcon} alt="INT"/>{
+                                loaderData.int}
+                            </li>
                         </ul>
                     </div>
                     <div className="pl-4">

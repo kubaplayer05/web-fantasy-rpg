@@ -4,8 +4,9 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser'
 import authRoute from "./routes/authRoute";
 import userClassRoute from "./routes/userClassRoute";
-import authMiddleware from "./middlewares/authMiddleware";
 import userRoute from "./routes/userRoute";
+import adminAuthMiddleware from "./middlewares/adminAuthMiddleware";
+import adminPanelRoute from "./routes/adminPanelRoute";
 
 dotenv.config();
 
@@ -20,7 +21,9 @@ app.use("/api/user", authRoute)
 app.use("/api/user", userRoute)
 app.use("/api/userClass", userClassRoute)
 
-app.use(authMiddleware)
+app.use(adminAuthMiddleware)
+
+app.use("/api/panel", adminPanelRoute)
 
 app.listen(port, () => {
     console.log(`⚡️[server]: Server is running at http://localhost:${port}`);

@@ -3,6 +3,7 @@ import {getCookie} from "../lib/getCookie.ts";
 
 interface Auth {
     username: String
+    isAdmin?: Boolean
 }
 
 interface AuthAction {
@@ -30,7 +31,8 @@ const reducer = (state: Auth, action: AuthAction) => {
             }
         case "LOGOUT":
             return {
-                username: null
+                username: null,
+                isAdmin: false
             }
         default:
             return state
@@ -43,7 +45,7 @@ const createInitialState = () => {
         const json = JSON.parse(user)
         return {...json}
     } catch {
-        return {username: null}
+        return {username: null, isAdmin: false}
     }
 }
 

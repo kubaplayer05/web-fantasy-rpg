@@ -10,6 +10,12 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+model Admin {
+    id             String @id @default(uuid())
+    name           String @unique
+    hashedPassword String
+}
+
 model User {
     id              String         @id @default(uuid())
     username        String         @unique
@@ -27,6 +33,7 @@ model User {
     equipedWeapon   Weapon?        @relation(fields: [equipedWeaponId], references: [id])
     equipedWeaponId Int?
     inventory       UserInventory?
+    skills          Skill[]
 }
 
 model UserInventory {
@@ -58,6 +65,33 @@ model Weapon {
     int           Int             @default(0)
     sta           Int             @default(0)
     UserInventory UserInventory[]
+}
+
+model Monster {
+    id      Int     @id @default(autoincrement())
+    name    String
+    desc    String
+    baseExp Int
+    hp      Int
+    atk     Int     @default(0)
+    def     Int     @default(0)
+    sta     Int     @default(0)
+    int     Int     @default(0)
+    lvl     Int
+    skills  Skill[]
+}
+
+model Skill {
+    id        Int       @id @default(autoincrement())
+    name      String
+    desc      String
+    baseDmg   Int
+    classId   Int?
+    turnCount Int?
+    stuning   Boolean   @default(false)
+    bleeding  Boolean   @default(false)
+    user      User[]
+    monster   Monster[]
 }
 
 enum Rarity {

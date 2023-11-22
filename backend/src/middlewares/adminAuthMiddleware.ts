@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken"
 
 const prisma = new PrismaClient()
 
-const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+const adminAuthMiddleware = async (req: Request, res: Response, next: NextFunction) => {
 
     try {
         const {token} = req.cookies
@@ -18,20 +18,18 @@ const authMiddleware = async (req: Request, res: Response, next: NextFunction) =
         // @ts-ignore
         const {id} = jwt.verify(token, process.env.SECRET)
 
-        const user = await prisma.user.findUnique({
+        const admin = await prisma.admin.findUnique({
             where: {
                 id
             }
         })
 
-        if (!user) {
+        if (!admin) {
             return res.status(403).json({
                 error: "Wrong authorization token"
             })
         }
 
-        // @ts-ignore
-        req.user = user
         next()
 
     } catch (err: any) {
@@ -41,4 +39,4 @@ const authMiddleware = async (req: Request, res: Response, next: NextFunction) =
     }
 }
 
-export default authMiddleware
+export default adminAuthMiddleware

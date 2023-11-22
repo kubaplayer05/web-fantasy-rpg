@@ -3,6 +3,9 @@ import bcrypt from "bcrypt"
 import {PrismaClient} from "@prisma/client"
 import {Request, Response} from "express"
 import {addWeaponToInventory, changeStats, equipWeapon} from "../utils/weaponUtils";
+import dotenv from 'dotenv';
+
+dotenv.config()
 
 const prisma = new PrismaClient()
 
@@ -121,6 +124,52 @@ export const registerHandler = async (req: Request, res: Response) => {
     }
 }
 
+export const createAdmin = async (req: Request, res: Response) => {
+
+    const name = process.env.ADMIN_NAME
+    const password = process.env.ADMIN_PASSWORD
+
+    if (!password || !name) {
+        return res.status(400).json({
+            msg: "provide ADMIN_PASSWORD and ADMIN_NAME in .env"
+        })
+    }
+
+    try {
+
+        const salt = await bcrypt.genSalt(10)
+        const hash = await bcrypt.hash(password, salt)
+
+        const admin = await prisma.admin.create({
+            data: {
+                name: name,
+                hashedPassword: hash
+            }
+        })
+
+        const token = createToken(admin.id)
+
+        res.cookie("token", token, {
+            httpOnly: true,
+        })
+
+        res.cookie("user", JSON.stringify({name}), {
+            httpOnly: false
+        })
+
+        return res.status(200).json({
+            name
+        })
+
+    } catch (err) {
+        console.error(err)
+        return res.status(400).json({
+            msg: "could not create admin account",
+            error: err
+        })
+    }
+}
+
 export const loginHandler = async (req: Request, res: Response) => {
 
     const {username, password} = req.body
@@ -174,3 +223,57 @@ export const loginHandler = async (req: Request, res: Response) => {
     }
 }
 
+export const loginAdmin = async (req: Request, res: Response) => {
+
+    const {password, name} = req.body
+
+    if (!password || !name) {
+        return res.status(400).json({
+            msg: "You must provide name and password"
+        })
+    }
+
+    try {
+
+        const admin = await prisma.admin.findUnique({
+            where: {
+                name
+            }
+        })
+
+        if (!admin) {
+            return res.status(400).json({
+                msg: "Admin account with that name do not exist"
+            })
+        }
+
+        const compare = await bcrypt.compare(password, admin.hashedPassword)
+
+        if (!compare) {
+            return res.status(400).json({
+                msg: "Wrong password provided"
+            })
+        }
+
+        const token = createToken(admin.id)
+
+        res.cookie("token", token, {
+            httpOnly: true,
+        })
+
+        res.cookie("user", JSON.stringify({username: name, isAdmin: true}), {
+            httpOnly: false
+        })
+
+        return res.status(200).json({
+            username: name,
+            isAdmin: true
+        })
+
+    } catch (err: any) {
+        res.status(400).json({
+            msg: "could not login as admin account",
+            error: err
+        })
+    }
+}
