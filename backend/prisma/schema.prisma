@@ -55,6 +55,7 @@ model Weapon {
     id            Int             @id @default(autoincrement())
     name          String
     desc          String
+    isDefault     Boolean         @default(false)
     minUserLvl    Int
     userClass     UserClass       @relation(fields: [classId], references: [id])
     user          User[]
