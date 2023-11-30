@@ -1,5 +1,5 @@
 import React, {createContext, useReducer} from "react";
-import {getCookie} from "../lib/getCookie.ts";
+import {getCookie, deleteCookie} from "../lib/getCookie.ts";
 
 interface Auth {
     username: String
@@ -30,6 +30,7 @@ const reducer = (state: Auth, action: AuthAction) => {
                 ...action.payload
             }
         case "LOGOUT":
+            deleteCookie("user")
             return {
                 username: null,
                 isAdmin: false

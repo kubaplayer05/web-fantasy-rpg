@@ -55,3 +55,39 @@ export const getUserProfile = async (req: Request, res: Response) => {
         })
     }
 }
+
+export const getAllUsers = async (req: Request, res: Response) => {
+
+    try {
+
+        const users = await prisma.user.findMany({
+            select: {
+                username: true,
+                class: {
+                    select: {
+                        name: true
+                    }
+                },
+                equipedWeapon: true,
+                money: true,
+                exp: true,
+                lvl: true,
+                hp: true,
+                atk: true,
+                def: true,
+                int: true,
+                sta: true
+            }
+        })
+
+        return res.status(200).json({
+            users
+        })
+
+    } catch (err) {
+        return res.status(400).json({
+            msg: "Could not fetch users",
+            error: err
+        })
+    }
+}

@@ -7,9 +7,11 @@ import RootLayout from "./Layout/RootLayout.tsx";
 import Profile, {profileLoader} from "./pages/Profile.tsx";
 import Admin, {adminAction} from "./pages/Admin.tsx";
 import AdminPanelLayout from "./Layout/AdminPanelLayout.tsx";
-import Players from "./pages/adminPanel/Players.tsx";
+import Players, {playersLoader} from "./pages/adminPanel/Players.tsx";
 import Weapons, {weaponsLoader} from "./pages/adminPanel/Weapons.tsx";
 import CreateWeapon, {createWeaponAction} from "./pages/adminPanel/CreateWeapon.tsx";
+import Skills, {skillsLoader} from "./pages/adminPanel/Skills.tsx";
+import Monsters, {monstersLoader} from "./pages/adminPanel/Monsters.tsx";
 
 export default function App() {
 
@@ -20,6 +22,10 @@ export default function App() {
             path: "/",
             element: (state.username && !state.isAdmin) ? <RootLayout/> : <Navigate to="/login"/>,
             children: [
+                {
+                    path: "/",
+                    element: <Navigate to={`/profile/${state.username}`}/>
+                },
                 {
                     path: "/profile/:username",
                     element: <Profile/>,
@@ -57,7 +63,8 @@ export default function App() {
                 },
                 {
                     path: "/admin/panel/players",
-                    element: <Players/>
+                    element: <Players/>,
+                    loader: playersLoader
                 },
                 {
                     path: "/admin/panel/weapons",
@@ -68,6 +75,16 @@ export default function App() {
                     path: "/admin/panel/weapons/create",
                     element: <CreateWeapon/>,
                     action: createWeaponAction
+                },
+                {
+                    path: "/admin/panel/skills",
+                    element: <Skills/>,
+                    loader: skillsLoader
+                },
+                {
+                    path: "/admin/panel/monsters",
+                    element: <Monsters/>,
+                    loader: monstersLoader
                 }
             ]
         }

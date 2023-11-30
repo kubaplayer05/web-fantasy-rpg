@@ -57,6 +57,7 @@ export default function Register() {
                     <div className="flex flex-col gap-2">
                         <Button className="text-lg">Create Account</Button>
                         <Link className="text-center" to="/login">or go to Login page</Link>
+                        <Link to="/admin" className="text-center">(Go to admin page)</Link>
                     </div>
                 </div>
                 <div className="border-l-2 border-l-gray-300 px-4">

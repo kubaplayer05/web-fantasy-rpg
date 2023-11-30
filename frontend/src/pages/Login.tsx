@@ -28,6 +28,7 @@ export default function Login() {
                     <Input name="password" placeholder="Your password..." id="password" type="password"/>
                 </div>
                 <Link to="/register" className="text-center">Do not have account? Go to register page</Link>
+                <Link to="/admin" className="text-center">Go to admin page</Link>
                 <Button className="text-lg">Login</Button>
             </Form>
         </div>

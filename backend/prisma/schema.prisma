@@ -84,6 +84,7 @@ model Monster {
 
 model Skill {
     id        Int       @id @default(autoincrement())
+    isDefault Boolean   @default(false)
     name      String
     desc      String
     baseDmg   Int

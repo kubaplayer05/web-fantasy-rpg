@@ -1,5 +1,7 @@
 import {Link, useLocation} from "react-router-dom";
 import {Outlet} from "react-router";
+import Button from "../components/Button.tsx";
+import {useAuthContext} from "../hooks/useAuthContext.ts";
 
 export default function AdminPanelLayout() {
 
@@ -8,6 +10,12 @@ export default function AdminPanelLayout() {
     const active = locationArr[locationArr.length - 1]
 
     const activeLinkStyle = "text-blue-800"
+
+    const {dispatch} = useAuthContext()
+
+    const logoutHandler = () => {
+        dispatch({type: "LOGOUT"})
+    }
 
     return (
         <>
@@ -23,6 +31,9 @@ export default function AdminPanelLayout() {
                           to="/admin/panel/monsters">monsters</Link>
                     <Link className={active === "weapons" ? activeLinkStyle : ""}
                           to="/admin/panel/weapons">weapons</Link>
+                    <Button onClick={() => {
+                        logoutHandler()
+                    }}>Logout</Button>
                 </div>
             </header>
             <main>

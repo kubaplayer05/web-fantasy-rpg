@@ -1,4 +1,4 @@
-import {Form} from "react-router-dom";
+import {Form, Link} from "react-router-dom";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import {useEffect} from "react";
@@ -24,12 +24,13 @@ export default function Admin() {
             <Form method="POST" className="flex flex-col gap-6 bg-gray-800 p-8 rounded-lg shadow">
                 <div className="flex flex-col gap-2">
                     <label htmlFor="username" className="text-gray-300">Admin name:</label>
-                    <Input name="name" placeholder="Warrior 123..." id="username"/>
+                    <Input name="name" placeholder="Default name for admin is admin" id="username"/>
                 </div>
                 <div className="flex flex-col gap-2">
                     <label htmlFor="password" className="text-gray-300">Password:</label>
-                    <Input name="password" placeholder="Your password..." id="password" type="password"/>
+                    <Input name="password" placeholder="Admin password..." id="password" type="password"/>
                 </div>
+                <Link className="text-center" to="/login">Go to login page</Link>
                 <Button className="text-lg">Login as Admin</Button>
             </Form>
         </div>

@@ -6,6 +6,7 @@ import staminaIcon from "../../assets/pixel-energy.png"
 import bookIcon from "../../assets/pixel-book.png"
 import {Link} from "react-router-dom";
 import Button from "../../components/Button.tsx";
+import {useEffect, useState} from "react";
 
 
 interface Weapon {
@@ -17,15 +18,42 @@ interface Weapon {
     atk: number,
     int: number,
     def: number,
-    sta: number
+    sta: number,
+    isDefault: boolean
 }
 
 export default function Weapons() {
 
     const data: any = useLoaderData()
-    const {weapons} = data
+    const [weapons, setWeapons] = useState([])
+
+    useEffect(() => {
+        if (data) {
+            setWeapons(data.weapons)
+        }
+    }, [data])
 
     console.log(data)
+
+    const deleteWeapon = async (id: number) => {
+
+        const url = `${import.meta.env.VITE_API_URL}/panel/weapon/delete`
+
+        const response = await fetch(url, {
+            method: "DELETE",
+            credentials: "include",
+            body: JSON.stringify({id}),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+
+        if (!response.ok) {
+            return null
+        }
+
+        return await response.json()
+    }
 
     return (
         <div className="max-w-[1600px] mx-auto px-5">
@@ -58,9 +86,18 @@ export default function Weapons() {
                                         {weapon.sta}
                                     </div>
                                 </div>
-                                <p className="text-gray-400">Min. user level to equip: {weapon.minUserLvl}</p>
+                                <p className="text-gray-400">Min. user level to
+                                    equip: {weapon.minUserLvl} {weapon.isDefault && <span>
+                                    | This weapon is default and can't be deleted
+                                </span>}</p>
                             </div>
-                            <Button className="bg-red-800 font-medium px-2 py-1">X</Button>
+                            <Button onClick={() => {
+                                deleteWeapon(weapon.id).then(() => {
+                                    const newWeapons = weapons.filter((w: Weapon) => w.id !== weapon.id)
+                                    setWeapons(newWeapons)
+                                })
+                            }} disabled={weapon.isDefault}
+                                    className="bg-red-800 font-medium px-2 py-1 disabled:bg-gray-600">X</Button>
                         </div>
                     )
                 })}

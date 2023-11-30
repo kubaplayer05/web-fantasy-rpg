@@ -1,7 +1,7 @@
 import {Form} from "react-router-dom";
 import Input from "../../components/Input.tsx";
 import Button from "../../components/Button.tsx";
-import {useActionData} from "react-router";
+import {redirect, useActionData} from "react-router";
 
 export default function CreateWeapon() {
 
@@ -101,5 +101,5 @@ export const createWeaponAction = async ({request}: any) => {
         return null
     }
 
-    return await response.json()
+    return redirect("/admin/panel/weapons")
 }

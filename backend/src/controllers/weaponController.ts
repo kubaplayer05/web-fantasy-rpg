@@ -100,3 +100,46 @@ export const getAllUWeapons = async (req: Request, res: Response) => {
         })
     }
 }
+
+export const deleteWeapon = async (req: Request, res: Response) => {
+
+    const {id} = req.body
+
+    try {
+
+        const weapon = await prisma.weapon.findUnique({
+            where: {
+                id
+            }
+        })
+
+        if (!weapon) {
+            return res.status(400).json({
+                msg: "could not find weapon"
+            })
+        }
+
+        if (weapon.isDefault) {
+            return res.status(400).json({
+                msg: "cannot delete default weapon"
+            })
+        }
+
+        const deletedWeapon = await prisma.weapon.delete({
+            where: {
+                id
+            }
+        })
+
+        return res.status(200).json({
+            deletedWeapon
+        })
+
+    } catch (err) {
+        console.error(err)
+        return res.status(400).json({
+            msg: "could not delete weapon",
+            error: err
+        })
+    }
+}
