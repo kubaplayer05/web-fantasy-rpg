@@ -1,0 +1,26 @@
+### Instalacja
+
+Do przetestowania aplikacji jest potrzebny node.js (najlepiej w najnowszej wersji), npm (najlepiej w najnowszej wersji) oraz postgres.
+
+W pliku docker-compose.yaml znajduje się konfiguracja dockera, która pozwala na uruchomienie bazy danych wraz z prostą aplikacją internetową do
+zarządzania (adminer) dostepną na porcie 8080.
+Wystarczy wykonać polecenie `docker-compose up` w katalogu z plikiem docker-compose.yaml.
+
+Domyślne konto do bazy danych to `admin`, hasło `1234`, port `5432`.
+
+Jeżeli dane się różnią to należy zmienić wartości w pliku `/backend/.env`
+
+Po uruchomieniu bazy danych należy utworzyć bazę danych o nazwie `rpg` (można to zrobić przy pomocy adminera, dostępnego pod localhost:8080).
+
+Następnie należy przejść do katalogu `/backend` i wykonać polecenie `npm install`, `npx prisma migrate dev` oraz `npx prisma generate`.
+Po wykonaniu tych poleceń wykonać import pliku 'mydb.sql' do bazy danych (można to zrobić przy pomocy adminera, po zaznaczeniu bazy należy kliknąć import
+i zaznaczyć odpowiedni plik).
+
+Po wykonaniu tych czynności należy wykonać polecenie `npm run dev` w katalogu `/backend`
+
+Następnie przechodzimy do katalogu `/frontend` i wykonać polecenie `npm install` oraz `npm run dev`.
+Jeżeli wszystko przebiegło pomyślnie to aplikacja powinna być dostępna pod adresem `localhost:5173`.
+
+## Użytkowanie aplikacji
+
+Aby zalogować się jako admin należy użyć loginu `admin` oraz hasła `12345678`.

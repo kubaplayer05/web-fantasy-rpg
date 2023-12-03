@@ -13,6 +13,6 @@ services:
 
   adminer:
     image: adminer
-    restart: always
+    restart: no
     ports:
       - 8080:8080
